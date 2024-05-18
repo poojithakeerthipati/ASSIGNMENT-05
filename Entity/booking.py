@@ -1,20 +1,16 @@
 class Booking:
     def __init__(
         self,
-        event_name,
-        event_date,
-        event_time,
-        venue_name,
-        total_seats,
-        available_seats,
-        ticket_price,
-        event_type,
+        booking_id,
+        customer_id,
+        event_id,
+        num_of_tickets,
+        total_cost,
+        booking_date,
     ):
-        self.event_name = event_name
-        self.event_date = event_date
-        self.event_time = event_time
-        self.venue_name = venue_name
-        self.total_seats = total_seats
-        self.available_seats = available_seats
-        self.ticket_price = ticket_price
-        self.event_type = event_type
+        self.booking_id = booking_id
+        self.customer_id = customer_id
+        self.event_id = event_id
+        self.num_of_tickets = num_of_tickets
+        self.total_cost = total_cost
+        self.booking_date = booking_date

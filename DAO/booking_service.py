@@ -1,4 +1,31 @@
-class BookingService:
+from abc import ABC, abstractmethod
+from tabulate import tabulate
+from Util.DBConn import DBConnection
+
+
+class IBookingSystem(ABC):
+    @abstractmethod
+    def calculate_booking_cost(self, num_tickets):
+        pass
+
+    @abstractmethod
+    def book_tickets(self, event, num_tickets):
+        pass
+
+    @abstractmethod
+    def cancel_booking(self, num_tickets):
+        pass
+
+    @abstractmethod
+    def get_available_no_of_tickets(self):
+        pass
+
+    @abstractmethod
+    def get_event_details(self, event):
+        pass
+
+
+class BookingService(DBConnection, IBookingSystem):
 
     def calculate_booking_cost(self, num_tickets):
         total_cost = num_tickets * self.ticket_price
@@ -16,15 +43,24 @@ class BookingService:
             return f"{num_tickets} tickets cancelled successfully for {self.event_name}"
         return f"Sorry, Invalid no of tickets"
 
-    def getAvaialableNoOfTickets(self):
+    def get_available_no_of_tickets(self):
         return f"the tickets available are {self.available_seats}"
 
-    def getEventDetails(self):
-        print(f"Event name is: {self.event_name}")
-        print("Event date is : ", self.event_date.strftime("%d-%m-%Y"))
-        print("Event_time is : ", self.event_time.strftime("%H:%M"))
-        print(f"Venue_name is : {self.venue_name}")
-        print(f"Total seats are : {self.total_seats}")
-        print(f"Available seats are : {self.available_seats}")
-        print(f"price of the ticket is : {self.ticket_price}")
-        print(f"Type of the event : {self.event_type} ")
+    def get_event_details(self):
+        try:
+            self.cursor.execute("SELECT * FROM Booking")
+            booking_data = [list(row) for row in self.cursor.fetchall()]
+            headers = [
+                "booking_id",
+                "customer_id",
+                "event_id",
+                "num_of_tickets",
+                "total_cost",
+                "booking_date",
+            ]
+            if booking_data:
+                print(tabulate(booking_data, headers=headers, tablefmt="grid"))
+            else:
+                pass  # raise exception
+        except Exception as e:
+            print("OOPS Error Happened: ", e)
