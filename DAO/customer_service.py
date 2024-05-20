@@ -9,7 +9,7 @@ class ICustomerSerice(ABC):
         pass
 
 
-class CustomerService:
+class CustomerService(DBConnection, ICustomerSerice):
     def display_customer_details(self):
         try:
             self.cursor.execute("SELECT * FROM Customer")
